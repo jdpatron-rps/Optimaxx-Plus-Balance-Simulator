@@ -119,7 +119,7 @@ def future_values(plan, P, r, n, i, g):
         "Initial Annual Contribution": ["${:,.2f}".format(P*12)],
         "Final Year Monthly Contribution": ["${:,.2f}".format(final_monthly)],
         "Final Year Annual Contribution": ["${:,.2f}".format(final_annual)],
-        "Bonus Percentage": ["Percentage: {:.0%}".format(bonus_pct)], 
+        "Bonus Percentage": ["{:.0%}".format(bonus_pct)], 
         "Bonus Amount": ["${:,.2f}".format(P*12*bonus_pct)],
         **balances_at_marks,
         f"Final Balance (Year {n})": ["${:,.2f}".format(final_balance[-1])]
