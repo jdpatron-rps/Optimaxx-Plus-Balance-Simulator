@@ -111,18 +111,18 @@ def future_values(plan, P, r, n, i, g):
     final_annual = final_monthly * 12
     bonus_pct = bonus(P, n)
     year_marks = [1] + list(range(5, n + 1, 5))
-    balances_at_marks = {"Year {:.2f}".format(y): final_balance[int(y * 12) - 1] for y in year_marks}
+    balances_at_marks = {"Year ${:,.2f}".format(y): final_balance[int(y * 12) - 1] for y in year_marks}
 
     summary_data = {
         "Plan": [plan],
-        "Initial Monthly Contribution": [P],
-        "Initial Annual Contribution": [P*12],
-        "Final Year Monthly Contribution": ["{:.2f}".format(final_monthly)],
-        "Final Year Annual Contribution": ["{:.2f}".format(final_annual)],
+        "Initial Monthly Contribution": ["${:,.2f}".format(P)],
+        "Initial Annual Contribution": ["${:,.2f}".format(P*12)],
+        "Final Year Monthly Contribution": ["${:,.2f}".format(final_monthly)],
+        "Final Year Annual Contribution": ["${:,.2f}".format(final_annual)],
         "Bonus Percentage": ["Percentage: {:.0%}".format(bonus_pct)], 
-        "Bonus Amount": ["{:.2f}".format(P*12*bonus_pct)],
+        "Bonus Amount": ["${:,.2f}".format(P*12*bonus_pct)],
         **balances_at_marks,
-        f"Final Balance (Year {n})": ["{:.2f}".format(final_balance[-1])]
+        f"Final Balance (Year {n})": ["${:,.2f}".format(final_balance[-1])]
     }
 
     df_summary = pd.DataFrame(summary_data).T  # Transpose for 2 columns
