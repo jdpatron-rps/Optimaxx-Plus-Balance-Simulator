@@ -111,7 +111,7 @@ def future_values(plan, P, r, n, i, g):
     final_annual = final_monthly * 12
     bonus_pct = bonus(P, n)
     year_marks = [1] + list(range(5, n + 1, 5))
-    balances_at_marks = {f"Year {y}": final_balance[int(y * 12) - 1] for y in year_marks}
+    balances_at_marks = {"Year {:.2f}".format(y): final_balance[int(y * 12) - 1] for y in year_marks}
 
     summary_data = {
         "Plan": [plan],
@@ -119,8 +119,8 @@ def future_values(plan, P, r, n, i, g):
         "Initial Annual Contribution": [P*12],
         "Final Year Monthly Contribution": [final_monthly],
         "Final Year Annual Contribution": [final_annual],
-        "Bonus Percentage": [bonus_pct],
-        "Bonus Amount": [P*12*bonus_pct],
+        "Bonus Percentage": ["Percentage: {:.0%}".format(bonus_pct*100)], 
+        "Bonus Amount": ["{:.2f}".format(P*12*bonus_pct)],
         **balances_at_marks,
         f"Final Balance (Year {n})": [final_balance[-1]]
     }
@@ -137,9 +137,9 @@ st.title("Allianz Optimaxx Plus Simulator \n by: RPS Wealth Management")
 # Sidebars
 with st.sidebar:
     plan_max_values = {
-        'Optimaxx Pluz art. 93': 25000,
-        'Optimaxx Pluz art. 151': 17000,
-        'Optimaxx Pluz art. 185': 12500
+        'Optimaxx Plus art. 93': 25000,
+        'Optimaxx Plus art. 151': 17000,
+        'Optimaxx Plus art. 185': 12500
     }
 
     plan = st.selectbox('Plan:', list(plan_max_values.keys()))
