@@ -111,7 +111,7 @@ def future_values(plan, P, r, n, i, g):
     final_annual = final_monthly * 12
     bonus_pct = bonus(P, n)
     year_marks = [1] + list(range(5, n + 1, 5))
-    balances_at_marks = {"Year ${:,.2f}".format(y): final_balance[int(y * 12) - 1] for y in year_marks}
+    balances_at_marks = {"Year {}".format(y): "${:,.2f}".format(final_balance[int(y * 12) - 1]) for y in year_marks}
 
     summary_data = {
         "Plan": [plan],
