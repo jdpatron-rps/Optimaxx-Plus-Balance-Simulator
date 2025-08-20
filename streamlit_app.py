@@ -106,9 +106,9 @@ def future_values(plan, P, r, n, i, g):
     sns.lineplot(x=months_array, y=final_balance, label='Final balance', ax=ax)
     ax.fill_between(months_array, final_balance - sigma_amount, final_balance + sigma_amount, color='blue', alpha=0.1, label='Confidence Interval')
     current_values = plt.gca().get_yticks()
-    plt.gca().set_yticklabels(['{:,.0f}'.format(x) for x in current_values])
+    plt.gca().set_yticklabels(['${:,.0f}'.format(x) for x in current_values])
     ax.set_xlabel("Years")
-    ax.set_ylabel("Future Value ($)")
+    ax.set_ylabel("Future Value")
     ax.legend()
     ax.grid(True)
 
