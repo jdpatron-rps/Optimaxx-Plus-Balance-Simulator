@@ -158,4 +158,4 @@ with col1:
     st.pyplot(fig)
 
 with col2:
-    st.dataframe(df_summary)
+    st.dataframe(df_summary, height = 600)
