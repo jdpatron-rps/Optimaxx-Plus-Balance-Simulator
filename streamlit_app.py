@@ -64,17 +64,14 @@ def bonus_balance(P, i, months):
 
 def commited_balance(P, r, i, g, months):
     UDI = 8.53
-    balance, bal = [], 0
-    for m in range(1, months + 1):
-        if m <= 18:
-            balance.append(0)
-            continue
-        else:
-            bal += P*(g**(m-18))
-            bal *= r
-            bal -= 15*(UDI*(i**m))
-            bal *= (1 - 0.001)
-            balance.append(bal)
+    balance = [0 for _ in range(18)]
+    bal = 0
+    for m in range(19, months + 1):
+        bal += P*(g**(m-18))
+        bal *= r
+        bal -= 15*(UDI*(i**m))
+        bal *= (1 - 0.001)
+        balance.append(bal)
     return np.array(balance)
 
 def future_values(plan, P, r, n, i, g):
@@ -90,6 +87,11 @@ def future_values(plan, P, r, n, i, g):
     balance_bonus = bonus_balance(P, i, months)
     balance_commited = commited_balance(P, monthly_r, monthly_i, monthly_g, months)
 
+    initial_period_contributions = [P for _ in range(1,18+1)]
+    commited_balance_contributions = [P*(monthly_g**(m-18)) for m in range(19, months + 1)]
+    TC = initial_period_contributions + commited_balance_contributions
+    total_contributions = np.array([sum(TC[:i+1]) for i in range(len(TC))])
+
     initial_balance = balance_init + balance_bonus
     final_balance = initial_balance + balance_commited
 
@@ -100,8 +102,11 @@ def future_values(plan, P, r, n, i, g):
 
     fig, ax = plt.subplots(figsize=(10, 6))
     plt.ticklabel_format(style='plain', axis='y')
+    sns.lineplot(x=months_array, y=total_contributions, label='Total contributions')
     sns.lineplot(x=months_array, y=final_balance, label='Final balance', ax=ax)
     ax.fill_between(months_array, final_balance - sigma_amount, final_balance + sigma_amount, color='blue', alpha=0.1, label='Confidence Interval')
+    current_values = plt.gca().get_yticks()
+    plt.gca().set_yticklabels(['{:,.0f}'.format(x) for x in current_values])
     ax.set_xlabel("Years")
     ax.set_ylabel("Future Value ($)")
     ax.legend()
@@ -111,35 +116,41 @@ def future_values(plan, P, r, n, i, g):
     final_annual = final_monthly * 12
     bonus_pct = bonus(P, n)
     year_marks = [1] + list(range(5, n + 1, 5))
-    balances_at_marks = {"Year {}".format(y): "${:,.2f}".format(final_balance[int(y * 12) - 1]) for y in year_marks}
+    balances_at_marks = {f"Year {y}": "${:,.2f}".format(final_balance[int(y * 12) - 1]) for y in year_marks}
 
     summary_data = {
         "Plan": [plan],
+        "Return Rate": ["{:.1f}%".format(r)],
+        "Inflation Rate": ["{:.1f}%".format(i)],
+        "Growth Rate": ["{}%".format(g)],
+        "Years": [n],
+        "Bonus Percentage": ["{}%".format(bonus_pct*100)],
+        "Bonus Amount": ["${:,.2f}".format(P*12*bonus_pct)],
         "Initial Monthly Contribution": ["${:,.2f}".format(P)],
-        "Initial Annual Contribution": ["${:,.2f}".format(P*12)],
+        "Initial Annual Contribution": ["${:,.2f}".format(P * 12)],
         "Final Year Monthly Contribution": ["${:,.2f}".format(final_monthly)],
         "Final Year Annual Contribution": ["${:,.2f}".format(final_annual)],
-        "Bonus Percentage": ["{:.0%}".format(bonus_pct)], 
-        "Bonus Amount": ["${:,.2f}".format(P*12*bonus_pct)],
+        "Total Contributions": ["${:,.2f}".format(total_contributions[-1])],
         **balances_at_marks,
         f"Final Balance (Year {n})": ["${:,.2f}".format(final_balance[-1])]
     }
 
     df_summary = pd.DataFrame(summary_data).T  # Transpose for 2 columns
-    df_summary.columns = ['Value']
-
+    df_summary.columns = df_summary.iloc[0]  # Set first row as header
+    df_summary = df_summary[1:]  # Remove the first row used as header
+    df_summary.index.name = 'Description'
     return fig, df_summary
 
 # Streamlit UI
 st.set_page_config(layout="wide")
-st.title("Allianz Optimaxx Plus Simulator \n by: RPS Wealth Management")
+st.title("Allianz - Optimaxx Plus Simulator \n by: RPS Wealth Management")
 
 # Sidebars
 with st.sidebar:
     plan_max_values = {
-        'Optimaxx Plus art. 93': 25000,
-        'Optimaxx Plus art. 151': 17000,
-        'Optimaxx Plus art. 185': 12500
+        'Optimaxx Pluz art. 93': 25000,
+        'Optimaxx Pluz art. 151': 17000,
+        'Optimaxx Pluz art. 185': 12500
     }
 
     plan = st.selectbox('Plan:', list(plan_max_values.keys()))
@@ -158,4 +169,5 @@ with col1:
     st.pyplot(fig)
 
 with col2:
-    st.dataframe(df_summary, height = 600)
+    st.dataframe(df_summary, height=600)
+
