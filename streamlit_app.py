@@ -124,7 +124,7 @@ def future_values(plan, P, r, n, i, g):
         "Inflation Rate": ["{:.1f}%".format(i)],
         "Growth Rate": ["{}%".format(g)],
         "Years": [n],
-        "Bonus Percentage": ["{}%".format(bonus_pct*100)],
+        "Bonus Percentage": ["{:.0f}%".format(bonus_pct*100)],
         "Bonus Amount": ["${:,.2f}".format(P*12*bonus_pct)],
         "Initial Monthly Contribution": ["${:,.2f}".format(P)],
         "Initial Annual Contribution": ["${:,.2f}".format(P * 12)],
