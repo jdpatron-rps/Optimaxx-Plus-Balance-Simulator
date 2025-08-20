@@ -121,8 +121,8 @@ def future_values(plan, P, r, n, i, g):
     summary_data = {
         "Plan": [plan],
         "Return Rate": ["{:.1f}%".format(r)],
-        "Inflation Rate": ["{:.1f}%".format(i)],
-        "Growth Rate": ["{}%".format(g)],
+        "Inflation Rate": ["{:.1f}%".format(i*100)],
+        "Growth Rate": ["{}%".format(g*100)],
         "Years": [n],
         "Bonus Percentage": ["{:.0f}%".format(bonus_pct*100)],
         "Bonus Amount": ["${:,.2f}".format(P*12*bonus_pct)],
