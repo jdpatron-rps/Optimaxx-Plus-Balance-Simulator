@@ -158,7 +158,7 @@ with st.sidebar:
     r = st.slider('Return Rate (%)', 0.0, 12.0, 6.0, 0.5)
     n = st.slider('Years', 10, 50, 15, 1)
     i = st.slider('Inflation (%)', 1.0, 5.0, 2.0, 0.5)
-    g = st.slider('Growth (%)', 0, 10, 0, 1)
+    g = st.slider('Contributio Growth (%) [YoY]', 0, 10, 0, 1)
 
 # Main and right columns
 col1, col2 = st.columns([2, 1])
