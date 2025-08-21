@@ -156,7 +156,7 @@ with st.sidebar:
     plan = st.selectbox('Plan:', list(plan_max_values.keys()))
     P = st.slider('Monthly Contribution', min_value=2500, max_value=plan_max_values[plan], value=2500, step=500)
     r = st.slider('Return Rate (%)', 0.0, 12.0, 6.0, 0.5)
-    n = st.slider('Years', 10, 25, 15, 1)
+    n = st.slider('Years', 10, 50, 15, 1)
     i = st.slider('Inflation (%)', 1.0, 5.0, 2.0, 0.5)
     g = st.slider('Growth (%)', 0, 10, 0, 1)
 
